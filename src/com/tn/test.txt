@@ -1,0 +1,49 @@
+-- Tạo bảng Khoá
+CREATE TABLE Khoa (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    makhoa VARCHAR(20),
+    tenkhoa VARCHAR(30),
+    dienthoai VARCHAR(20)
+);
+
+-- Insert dữ liệu vào bảng Khoa
+INSERT INTO Khoa (id, makhoa, tenkhoa, dienthoai)
+VALUES
+	(1, 'KHOA1', 'TOAN', '1234567890'),
+	(2, 'KHOA2', 'VAN', '0987654321'),
+	(3, 'KHOA3', 'ANH', '1234564311');
+
+-- Tạo bảng Sinh Vien
+CREATE TABLE SinhVien (
+    id INT PRIMARY KEY,
+    masv INT,
+    hotensv CHAR(30),
+    khoa_id INT,
+    namsinh INT,
+    quequan VARCHAR(30),
+   FOREIGN KEY (khoa_id) REFERENCES Khoa(id)
+);
+
+INSERT INTO SinhVien (id, masv, hotensv, khoa_id, namsinh, quequan)
+VALUES
+	(1, 1001, 'Nguyen Van A', 1, 1998, 'Ha Noi'),
+	(2, 1002, 'Tran Thi B', 2, 1999, 'Ho Chi Minh'),
+	(3, 1003, 'Tran Thi C', 3, 2000,'Da Nang');
+
+-- đưa ra thông tin gồm mã số, họ tên và tên khoa của tất cả các sinh viên
+SELECT SinhVien.masv, SinhVien.hotensv, Khoa.tenkhoa
+FROM SinhVien
+JOIN Khoa ON SinhVien.khoa_id = khoa.id;
+
+
+-- Sử dụng lệnh SQL để xuất ra thông tin về những sinh viên chưa được gán vào 1 khoa xác định
+SELECT *
+FROM SinhVien
+WHERE khoa_id IS NULL;
+
+
+-- Sử dụng câu lệnh SQL xuất ra danh sách gồm Mã số, Họ tên và Tuổi của các sinh viên khoa ‘TOAN’?
+SELECT masv, hotensv, YEAR(CURRENT_DATE) - namsinh AS tuoi
+FROM SinhVien
+JOIN Khoa ON SinhVien.khoa_id = Khoa.id
+WHERE Khoa.tenkhoa = 'TOAN';
